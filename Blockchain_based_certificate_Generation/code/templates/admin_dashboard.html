@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate Requests - CertChain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #2a3a7c);
+      color: #ffffff;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #4b6cb7, #a044ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gradient-btn {
+      background: linear-gradient(90deg, #4b6cb7, #a044ff);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gradient-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: drift 20s linear infinite;
+    }
+    @keyframes drift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(100vw, 100vh); }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    th {
+      background: rgba(255, 255, 255, 0.15);
+      font-weight: 600;
+    }
+    tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    a {
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .approve-link {
+      color: #00c4b4;
+    }
+    .approve-link:hover {
+      color: #00e6d3;
+    }
+    .reject-link {
+      color: #ff6b6b;
+    }
+    .reject-link:hover {
+      color: #ff8787;
+    }
+    .status-approved {
+      color: #00c4b4;
+    }
+    .status-rejected {
+      color: #ff6b6b;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="fixed top-0 w-full glass z-50 py-4">
+    <nav class="container mx-auto flex justify-between items-center px-4">
+      <div class="flex items-center">
+        <svg class="w-10 h-10 mr-2" fill="#ffffff" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14a6 6 0 00-6 6c0 1.66.67 3.16 1.76 4.24l1.41-1.41C7.83 10.17 8.69 9 10 9v2l3 3h2V9h-2l-3 3V9c-1.31 0-2.17-1.17-1.83-2.24l-1.41-1.41A6 6 0 0012 6z"/>
+        </svg>
+        <span class="text-2xl font-bold">Generate & Validate</span>
+      </div>
+
+<div class="flex space-x-4">
+
+  <a href="/">
+    <button class="gradient-btn px-6 py-3 rounded-lg">Logout</button>
+  </a>     
+</div>      <div class="md:hidden">
+        <button id="menu-btn" class="focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="#ffffff" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
+        </button>
+      </div>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-800">
+      <a href="#home" class="block py-2 px-4">Home</a>
+      <a href="#features" class="block py-2 px-4">Features</a>
+      <a href="#how-it-works" class="block py-2 px-4">How It Works</a>
+      <a href="#impact" class="block py-2 px-4">Impact</a>
+      <a href="#contact" class="block py-2 px-4">Contact</a>
+      <button class="gradient-btn px-4 py-2 rounded-lg m-4">Login</button>
+    </div>
+  </header>
+
+  <!-- Certificate Requests Section -->
+  <section class="min-h-screen py-24">
+    <div class="particles">
+      <div class="particle w-2 h-2" style="top: 10%; left: 20%;"></div>
+      <div class="particle w-3 h-3" style="top: 30%; left: 50%;"></div>
+      <div class="particle w-2 h-2" style="top: 60%; left: 80%;"></div>
+    </div>
+    <div class="container mx-auto px-4">
+      <div class="glass p-8">
+        <h2 class="text-3xl font-bold gradient-text mb-6 text-center">Certificate Requests</h2>
+        <div class="overflow-x-auto">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for cert in certs %}
+              <tr>
+                <td>{{ cert.id }}</td>
+                <td>{{ cert.issued_to }}</td>
+                <td>{{ cert.email }}</td>
+                <td>{{ cert.description }}</td>
+                <td class="{% if cert.status == 'Approved' %}status-approved{% elif cert.status == 'Rejected' %}status-rejected{% endif %}">
+                  {{ cert.status }}
+                </td>
+                <td>
+                  {% if cert.status == "Pending" %}
+                    <a href="{% url 'approve_certificate' cert.id %}" class="approve-link">✅ Approve & Send</a> |
+                    <a href="{% url 'reject_certificate' cert.id %}" class="reject-link">❌ Reject</a>
+                  {% elif cert.status == "Approved" %}
+                    <span class="status-approved">✅ Approved & Sent</span>
+                  {% elif cert.status == "Rejected" %}
+                    <span class="status-rejected">❌ Rejected</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-8 border-t border-white/20">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <h3 class="text-lg font-semibold mb-4">CertChain</h3>
+        <p class="opacity-80">Empowering refugees with secure credentials.</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+        <a href="#home" class="block opacity-80 hover:gradient-text">Home</a>
+        <a href="#features" class="block opacity-80 hover:gradient-text">Features</a>
+        <a href="#how-it-works" class="block opacity-80 hover:gradient-text">How It Works</a>
+        <a href="#impact" class="block opacity-80 hover:gradient-text">Impact</a>
+        <a href="#contact" class="block opacity-80 hover:gradient-text">Contact</a>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Resources</h3>
+        <a href="#" class="block opacity-80 hover:gradient-text">Blog</a>
+        <a href="#" class="block opacity-80 hover:gradient-text">FAQ</a>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+        <form class="space-y-2">
+          <input type="email" placeholder="Your Email" class="w-full p-2 rounded-lg bg-white/10">
+          <button class="gradient-btn w-full py-2 rounded-lg">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="text-center mt-8 opacity-80">
+      <p>© 2025 CertChain. All rights reserved. <a href="#" class="hover:gradient-text">Privacy</a> | <a href="#" class="hover:gradient-text">Terms</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    // GSAP Animations
+    gsap.from('.glass', {
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.glass',
+        start: 'top 80%'
+      }
+    });
+
+    // Animate table rows
+    gsap.utils.toArray('tbody tr').forEach(row => {
+      gsap.from(row, {
+        y: 20,
+        opacity: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: row,
+          start: 'top 90%'
+        }
+      });
+    });
+
+    // Particle animation
+    const particles = document.querySelectorAll('.particle');
+    particles.forEach(particle => {
+      gsap.to(particle, {
+        x: window.innerWidth,
+        y: window.innerHeight,
+        duration: 20,
+        repeat: -1,
+        ease: 'linear'
+      });
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
